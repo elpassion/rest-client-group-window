@@ -7,6 +7,7 @@ import pl.elpassion.dmalantowicz.rest_client_example.domain.NearPlacesClient
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 import java.io.InputStreamReader
 import java.net.URL
+import java.net.URLEncoder
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
@@ -22,7 +23,9 @@ class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<T
         val places : MutableList<Place> = ArrayList<Place>()
         val textView = params[0]
         if (textView != null){
-            val url = URL(urlFirstPart + textView.text + urlSecondPart)
+            val phrase = URLEncoder.encode(textView.text.toString(), "UTF-8").replace("+","%20");
+            val urlString = urlFirstPart + phrase + urlSecondPart
+            val url = URL(urlString)
             val urlConnection = url.openConnection() as HttpsURLConnection
             val restResponse = InputStreamReader(urlConnection.inputStream).readText()
             parseJson(places, restResponse)
