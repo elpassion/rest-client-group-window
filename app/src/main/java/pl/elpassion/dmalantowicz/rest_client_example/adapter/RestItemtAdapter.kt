@@ -24,7 +24,7 @@ class RestItemtAdapter(private val place: Place) : ItemAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder) {
         val nameRateItemHolder = holder as NameRateItemHolder
         nameRateItemHolder.name.text = place.name
-        nameRateItemHolder.rate.text = place.name
+        nameRateItemHolder.rate.text = if(place.rate != null ) place.rate.toString() else ""
     }
 
     private inner class NameRateItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

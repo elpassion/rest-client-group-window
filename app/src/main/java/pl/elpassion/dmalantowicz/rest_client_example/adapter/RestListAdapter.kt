@@ -13,4 +13,6 @@ class RestListAdapter(val places : List<Place> ) : BaseAdapter(){
         }
     }
 
+
+
 }

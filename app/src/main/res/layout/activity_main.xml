@@ -6,7 +6,11 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/inputText"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:singleLine="true"/>
 
     <include layout="@layout/rest_response_list" />
 
