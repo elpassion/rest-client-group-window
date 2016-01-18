@@ -3,8 +3,8 @@ package pl.elpassion.dmalantowicz.rest_client_example.task
 import android.os.AsyncTask
 import com.google.gson.Gson
 import pl.elpassion.dmalantowicz.rest_client_example.NearPlacesClient
-import pl.elpassion.dmalantowicz.rest_client_example.Response
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
+import pl.elpassion.dmalantowicz.rest_client_example.domain.PlaceListWrapper
 import java.io.InputStreamReader
 import java.net.URL
 import java.net.URLEncoder
@@ -36,8 +36,8 @@ class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<S
     }
 
     private fun parseJson(restResponse: String): List<Place>{
-        val response : Response = Gson().fromJson(restResponse, Response::class.java)
-        return response.results
+        val placeListWrapper: PlaceListWrapper = Gson().fromJson(restResponse, PlaceListWrapper::class.java)
+        return placeListWrapper.results
     }
 
     override fun onPostExecute(result: List<Place>) {

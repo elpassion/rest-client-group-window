@@ -35,6 +35,5 @@ class MainActivity : AppCompatActivity(), NearPlacesClient {
 
     override fun onNoInternetConnection() {
         Snackbar.make(recyclerView, "No internet connection.", Snackbar.LENGTH_LONG).show()
-        editText.text = "test"
     }
 }
