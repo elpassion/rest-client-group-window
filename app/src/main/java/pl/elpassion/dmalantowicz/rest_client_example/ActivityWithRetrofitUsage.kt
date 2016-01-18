@@ -19,7 +19,7 @@ import java.util.*
 class ActivityWithRetrofitUsage : AppCompatActivity(), Callback<PlaceListWrapper> {
 
     companion object {
-        val endPointDomain = "https://maps.googleapis.com"
+        val googleApiDomain = "https://maps.googleapis.com"
         val noInternetConnectionMsg = "No internet connection."
     }
 
@@ -27,7 +27,7 @@ class ActivityWithRetrofitUsage : AppCompatActivity(), Callback<PlaceListWrapper
     val editText by lazy { findViewById(R.id.editText) as TextView }
     val service by lazy{
         val retrofit = Retrofit.Builder()
-                .baseUrl(endPointDomain)
+                .baseUrl(googleApiDomain)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         retrofit.create(GoogleAPIService::class.java)
