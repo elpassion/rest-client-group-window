@@ -16,13 +16,18 @@ import java.util.*
 /**
  * Created by dmalantowicz on 18.01.2016.
  */
-class ActivityWithRetrofitUsage : AppCompatActivity(), Callback<PlaceListWrapper>{
+class ActivityWithRetrofitUsage : AppCompatActivity(), Callback<PlaceListWrapper> {
+
+    companion object {
+        val endPointDomain = "https://maps.googleapis.com"
+        val noInternetConnectionMsg = "No internet connection."
+    }
 
     val recyclerView by lazy { findViewById(R.id.rest_list) as RecyclerView }
     val editText by lazy { findViewById(R.id.editText) as TextView }
     val service by lazy{
         val retrofit = Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com")
+                .baseUrl(endPointDomain)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         retrofit.create(GoogleAPIService::class.java)
@@ -50,8 +55,8 @@ class ActivityWithRetrofitUsage : AppCompatActivity(), Callback<PlaceListWrapper
 
     override fun onFailure(t: Throwable) {
         if (t is Exception) {
-            Snackbar.make(recyclerView, "No internet connection.", Snackbar.LENGTH_LONG).show()
-            editText.text = "No internet connection"
+            Snackbar.make(recyclerView, noInternetConnectionMsg, Snackbar.LENGTH_LONG).show()
+            editText.text = noInternetConnectionMsg
         }
     }
 
