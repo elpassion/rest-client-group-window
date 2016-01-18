@@ -1,9 +1,9 @@
 package pl.elpassion.dmalantowicz.rest_client_example.task
 
 import android.os.AsyncTask
-import android.widget.TextView
-import org.json.JSONObject
-import pl.elpassion.dmalantowicz.rest_client_example.domain.NearPlacesClient
+import com.google.gson.Gson
+import pl.elpassion.dmalantowicz.rest_client_example.NearPlacesClient
+import pl.elpassion.dmalantowicz.rest_client_example.Response
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 import java.io.InputStreamReader
 import java.net.URL
@@ -11,46 +11,38 @@ import java.net.URLEncoder
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-/**
- * Created by dmalantowicz on 15.01.2016.
- */
-class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<TextView, Integer, List<Place>>(){
+
+class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<String, Int, List<Place>>() {
 
     val urlFirstPart = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=52.2398936,20.9880451&radius=5000&name="
     val urlSecondPart = "&key=%20AIzaSyC8Cl3TYbzkZ6bb8_fwKeMhFvx_Be6B0CY"
 
-    public override fun doInBackground(vararg params: TextView?): List<Place>? {
-        val places : MutableList<Place> = ArrayList<Place>()
-        val textView = params[0]
-        if (textView != null){
-            val phrase = URLEncoder.encode(textView.text.toString(), "UTF-8").replace("+","%20");
-            val urlString = urlFirstPart + phrase + urlSecondPart
-            val url = URL(urlString)
-            val urlConnection = url.openConnection() as HttpsURLConnection
-            val restResponse = InputStreamReader(urlConnection.inputStream).readText()
-            parseJson(places, restResponse)
+    public override fun doInBackground(vararg params: String): List<Place> {
+        val places: MutableList<Place> = ArrayList<Place>()
+        val text = params[0]
+        val phrase = URLEncoder.encode(text, "UTF-8")
+        val urlString = urlFirstPart + phrase + urlSecondPart
+        val url = URL(urlString)
+        val urlConnection = url.openConnection() as HttpsURLConnection
+
+        val restResponse: String
+        try {
+            restResponse = InputStreamReader(urlConnection.inputStream).readText()
+            places.addAll(parseJson(restResponse))
+            return places
+        } catch(e: Exception) {
+            return places
         }
-        return places
+
     }
 
-    private fun parseJson(places: MutableList<Place>, restResponse: String) {
-        val values = JSONObject(restResponse).getJSONArray("results")
-        for (i in 0..values.length() - 1) {
-            val placeJson = values.getJSONObject(i)
-            val name = placeJson.getString("name")
-            val place : Place
-            if (!placeJson.isNull("rating")) {
-                val rate = placeJson.getDouble("rating")
-                place = Place(name, rate)
-            } else {
-                place = Place(name = name)
-            }
-            places.add(place)
-        }
+    private fun parseJson(restResponse: String): List<Place>{
+        val response : Response = Gson().fromJson(restResponse, Response::class.java)
+        return response.results
     }
 
-    override fun onPostExecute(result: List<Place>?) {
-        nearPlacesClient.update(result!!)
+    override fun onPostExecute(result: List<Place>) {
+        nearPlacesClient.update(result)
     }
 
 }

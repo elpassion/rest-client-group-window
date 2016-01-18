@@ -6,9 +6,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
 import pl.elpassion.dmalantowicz.rest_client_example.adapter.RestListAdapter
-import pl.elpassion.dmalantowicz.rest_client_example.domain.NearPlacesClient
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 import pl.elpassion.dmalantowicz.rest_client_example.task.NearPlacesDownloader
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NearPlacesClient {
 
@@ -19,12 +19,12 @@ class MainActivity : AppCompatActivity(), NearPlacesClient {
         setContentView(R.layout.activity_main)
         val inputText = findViewById(R.id.inputText) as TextView
         inputText.setOnEditorActionListener { textView, id, keyEvent ->
-            val APIExecuter = NearPlacesDownloader(this)
-            APIExecuter.execute(textView)
+            val nearPlacesDownloader = NearPlacesDownloader(this)
+            nearPlacesDownloader.execute(textView.text.toString())
             true
         }
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-
+        recyclerView.adapter = RestListAdapter(ArrayList())
     }
 
     override fun update(places: List<Place>) {

@@ -21,5 +21,4 @@
         android:text="rate"
         android:id="@+id/rate" />
 
-
 </LinearLayout>

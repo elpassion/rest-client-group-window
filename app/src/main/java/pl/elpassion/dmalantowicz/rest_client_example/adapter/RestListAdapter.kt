@@ -9,10 +9,7 @@ class RestListAdapter(val places : List<Place> ) : BaseAdapter(){
 
     init{
         places.forEach {
-            adapters.add(RestItemtAdapter( it ))
+            adapters.add(RestItemAdapter( it ))
         }
     }
-
-
-
 }

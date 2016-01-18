@@ -11,7 +11,7 @@ import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 /**
  * Created by dmalantowicz on 15.01.2016.
  */
-class RestItemtAdapter(private val place: Place) : ItemAdapter {
+class RestItemAdapter(private val place: Place) : ItemAdapter {
 
     override val itemViewType = R.id.name_rate_layout
 
@@ -24,7 +24,7 @@ class RestItemtAdapter(private val place: Place) : ItemAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder) {
         val nameRateItemHolder = holder as NameRateItemHolder
         nameRateItemHolder.name.text = place.name
-        nameRateItemHolder.rate.text = if(place.rate != null ) place.rate.toString() else ""
+        nameRateItemHolder.rate.text = if(place.rating != null ) place.rating.toString() else ""
     }
 
     private inner class NameRateItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
