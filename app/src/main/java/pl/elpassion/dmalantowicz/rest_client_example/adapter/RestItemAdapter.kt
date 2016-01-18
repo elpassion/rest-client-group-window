@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import pl.elpassion.dmalantowicz.rest_client_example.MainActivity
 import pl.elpassion.dmalantowicz.rest_client_example.R
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 
@@ -25,10 +28,12 @@ class RestItemAdapter(private val place: Place) : ItemAdapter {
         val nameRateItemHolder = holder as NameRateItemHolder
         nameRateItemHolder.name.text = place.name
         nameRateItemHolder.rate.text = if(place.rating != null ) place.rating.toString() else ""
+        Glide.with(nameRateItemHolder.icon.getContext()).load(place.icon).into(nameRateItemHolder.icon) // if(place.rating != null ) place.rating.toString() else ""
     }
 
     private inner class NameRateItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
         val rate = itemView.findViewById(R.id.rate) as TextView
+        val icon = itemView.findViewById(R.id.image) as ImageView
     }
 }

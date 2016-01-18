@@ -5,6 +5,10 @@
     android:id="@+id/name_rate_layout">
 
 
+    <ImageView
+        android:layout_width="24pt"
+        android:layout_height="24pt"
+        android:id="@+id/image"/>
     <TextView
         android:textSize="20dp"
         android:layout_weight="1"
