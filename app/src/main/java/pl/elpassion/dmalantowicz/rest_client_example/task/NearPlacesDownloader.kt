@@ -24,16 +24,15 @@ class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<S
         val urlString = urlFirstPart + phrase + urlSecondPart
         val url = URL(urlString)
         val urlConnection = url.openConnection() as HttpsURLConnection
-
         val restResponse: String
         try {
             restResponse = InputStreamReader(urlConnection.inputStream).readText()
             places.addAll(parseJson(restResponse))
             return places
-        } catch(e: Exception) {
+        } catch (e : Exception){
+            nearPlacesClient.onNoInternetConnection()
             return places
         }
-
     }
 
     private fun parseJson(restResponse: String): List<Place>{
@@ -42,7 +41,7 @@ class NearPlacesDownloader(val nearPlacesClient: NearPlacesClient) : AsyncTask<S
     }
 
     override fun onPostExecute(result: List<Place>) {
-        nearPlacesClient.update(result)
+        nearPlacesClient.onPlacesUpdate(result)
     }
 
 }
