@@ -5,11 +5,11 @@ import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 /**
  * Created by dmalantowicz on 15.01.2016.
  */
-class RestListAdapter(val places : List<Place> ) : BaseAdapter(){
+class PlacesListAdapter(val places : List<Place> ) : BaseAdapter(){
 
     init{
         places.forEach {
-            adapters.add(RestItemAdapter( it ))
+            adapters.add(PlaceItemAdapter( it ))
         }
     }
 }

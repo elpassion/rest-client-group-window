@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
-import pl.elpassion.dmalantowicz.rest_client_example.adapter.RestListAdapter
+import pl.elpassion.dmalantowicz.rest_client_example.adapter.PlacesListAdapter
 import pl.elpassion.dmalantowicz.rest_client_example.domain.PlaceListWrapper
 import retrofit2.GsonConverterFactory
 import retrofit2.Retrofit
@@ -29,12 +29,12 @@ class ActivityWithRetrofitUsage : AppCompatActivity() {
     val recyclerView by lazy { findViewById(R.id.rest_list) as RecyclerView }
     val editText by lazy { findViewById(R.id.editText) as TextView }
     val service by lazy {
-        val retrofit = Retrofit.Builder()
+        Retrofit.Builder()
                 .baseUrl(googleApiDomain)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
-        retrofit.create(GoogleAPIService::class.java)
+                .create(GoogleAPIService::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class ActivityWithRetrofitUsage : AppCompatActivity() {
 
     private fun setUpRecycleView() {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-        recyclerView.adapter = RestListAdapter(ArrayList())
+        recyclerView.adapter = PlacesListAdapter(ArrayList())
     }
 
     private fun setButtonOnEditorActionListener() {
@@ -56,8 +56,8 @@ class ActivityWithRetrofitUsage : AppCompatActivity() {
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                        { placeListWrapper -> onResponse(placeListWrapper) },
-                        { throwable -> onFailure(throwable) })
+                        { onResponse(it) },
+                        { onFailure(it) })
             true
         }
     }
@@ -72,7 +72,7 @@ class ActivityWithRetrofitUsage : AppCompatActivity() {
 
     fun onResponse(placeListWrapper: PlaceListWrapper) {
         val places = placeListWrapper.results
-        recyclerView.adapter = RestListAdapter(places)
+        recyclerView.adapter = PlacesListAdapter(places)
     }
 
 }

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
-import pl.elpassion.dmalantowicz.rest_client_example.adapter.RestListAdapter
+import pl.elpassion.dmalantowicz.rest_client_example.adapter.PlacesListAdapter
 import pl.elpassion.dmalantowicz.rest_client_example.domain.Place
 import pl.elpassion.dmalantowicz.rest_client_example.task.NearPlacesDownloader
 import java.util.*
@@ -26,11 +26,11 @@ class MainActivity : AppCompatActivity(), NearPlacesClient {
             true
         }
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-        recyclerView.adapter = RestListAdapter(ArrayList())
+        recyclerView.adapter = PlacesListAdapter(ArrayList())
     }
 
     override fun onPlacesUpdate(places: List<Place>) {
-        recyclerView.adapter = RestListAdapter(places)
+        recyclerView.adapter = PlacesListAdapter(places)
     }
 
     override fun onNoInternetConnection() {
